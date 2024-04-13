@@ -1,13 +1,17 @@
 import React from "react";
 import GameCard from "./GameCard";
+import { Game } from "@/types/types";
 
-const GameCardList = () => {
+interface AllGameProps {
+  allGame: Game[];
+}
+
+const GameCardList = ({ allGame }: AllGameProps) => {
   return (
     <div className="grid lg:grid-cols-3 px-4 py-4 gap-4">
-      <GameCard />
-      <GameCard />
-      <GameCard />
-      <GameCard />
+      {allGame.map((game: Game) => (
+        <GameCard key={game.id} game={game} />
+      ))}
     </div>
   );
 };
