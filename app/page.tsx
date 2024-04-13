@@ -2,9 +2,13 @@ import GameCardList from "@/components/GameCardList";
 import { Game } from "@/types/types";
 
 async function getAllGame() {
-  const response = await fetch("http://localhost:3000/api/games", {
-    cache: "no-store",
-  });
+  // const response = await fetch("http://localhost:3000/api/games", {
+  const response = await fetch(
+    "https://aipeke746.github.io/game_site/api/games",
+    {
+      cache: "no-store",
+    },
+  );
 
   const allGame: Game[] = await response.json();
   return allGame;
