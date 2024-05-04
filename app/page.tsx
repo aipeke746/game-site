@@ -22,13 +22,20 @@ async function getAllGame() {
     },
     {
       id: 2,
+      title: "⚪︎×ゲーム",
+      discription: "⚪︎×ゲームで遊ぶことができます。",
+      content: "スマホ・PCで遊べる⚪︎×ゲームです。",
+      url: "https://tic-tac-toe-gamma-flame.vercel.app/",
+    },
+    {
+      id: 3,
       title: "エンドレス迷路",
       discription: "ひたすら迷路を解くゲームです。",
       content: "スマホ・PCで遊べる迷路ゲームです。",
       url: "https://endless-maze-flax.vercel.app/",
     },
     {
-      id: 3,
+      id: 4,
       title: "ブロック崩し",
       discription: "ブロック崩しゲームです。",
       content: "スマホ・PCで遊べるブロック崩しゲームです。",
