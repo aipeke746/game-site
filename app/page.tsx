@@ -29,13 +29,20 @@ async function getAllGame() {
     },
     {
       id: 3,
+      title: "コネクトフォー",
+      discription: "コネクトフォーで遊ぶことができます。",
+      content: "スマホ・PCで遊べるコネクトフォーゲームです。",
+      url: "https://connect-four-tan.vercel.app/",
+    },
+    {
+      id: 4,
       title: "エンドレス迷路",
       discription: "ひたすら迷路を解くゲームです。",
       content: "スマホ・PCで遊べる迷路ゲームです。",
       url: "https://endless-maze-flax.vercel.app/",
     },
     {
-      id: 4,
+      id: 5,
       title: "ブロック崩し",
       discription: "ブロック崩しゲームです。",
       content: "スマホ・PCで遊べるブロック崩しゲームです。",
