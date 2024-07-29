@@ -43,13 +43,20 @@ async function getAllGame() {
     },
     {
       id: 5,
+      title: "チェス（制作途中）",
+      discription: "チェスで遊ぶことができます。",
+      content: "スマホ・PCで遊べるボードーゲームです。",
+      url: "https://chess-lyart-seven.vercel.app/",
+    },
+    {
+      id: 6,
       title: "エンドレス迷路（制作途中）",
       discription: "ひたすら迷路を解くゲームです。",
       content: "スマホ・PCで遊べる迷路ゲームです。",
       url: "https://endless-maze-flax.vercel.app/",
     },
     {
-      id: 6,
+      id: 7,
       title: "ブロック崩し（制作途中）",
       discription: "ブロック崩しゲームです。",
       content: "スマホ・PCで遊べるブロック崩しゲームです。",
