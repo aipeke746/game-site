@@ -50,7 +50,7 @@ async function getAllGame() {
     },
     {
       id: 6,
-      title: "エンドレス迷路（制作途中）",
+      title: "エンドレス迷路",
       discription: "ひたすら迷路を解くゲームです。",
       content: "スマホ・PCで遊べる迷路ゲームです。",
       url: "https://endless-maze-flax.vercel.app/",
