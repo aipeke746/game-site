@@ -62,13 +62,13 @@ async function getAllGame() {
       content: "スマホ・PCで遊べるブロック崩しゲームです。",
       url: "https://breaking-blocks-phi.vercel.app/",
     },
-    {
-      id: 8,
-      title: "タワーディフェンス（制作途中）",
-      discription: "タワーディフェンスゲームです。",
-      content: "スマホ・PCで遊べるタワーディフェンスゲームです。",
-      url: "https://tower-defense-chi.vercel.app/",
-    },
+    // {
+    //   id: 8,
+    //   title: "タワーディフェンス（制作途中）",
+    //   discription: "タワーディフェンスゲームです。",
+    //   content: "スマホ・PCで遊べるタワーディフェンスゲームです。",
+    //   url: "https://tower-defense-chi.vercel.app/",
+    // },
   ];
   return games;
 }
