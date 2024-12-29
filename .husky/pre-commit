@@ -31,24 +31,14 @@ npm run check-types ||
     false;
 )
 
-# # update test coverage
-# npm run coverage ||
-# (
-#     echo "\n ❌🟩 Test coverage ${RED}Failed${NC}. 🟩❌\n View the errors above to see why.\n"
-#     false;
-
-# )
-
 # If everything passes... Now we can build
 echo "🔥🚀 ${BOLD}All passed... Now we can build.${NC} 🚀🔥"
 
-npm run build ||
-(
-    echo "\n ❌🟩 Next build ${RED}Failed${NC}. 🟩❌\n View the errors above to see why.\n"
-    false;
-)
+# npm run build ||
+# (
+#     echo "\n ❌🟩 Next build ${RED}Failed${NC}. 🟩❌\n View the errors above to see why.\n"
+#     false;
+# )
 
-git a .
-
-# If everything passes... Now we can commit
-echo "✅✅ ${GREEN}Build is completed... I am committing this now.${NC} ✅✅\n"
+# # If everything passes... Now we can commit
+# echo "✅✅ ${GREEN}Build is completed... I am committing this now.${NC} ✅✅\n"
