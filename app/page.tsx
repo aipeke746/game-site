@@ -53,7 +53,7 @@ async function getAllGame() {
       title: "タワーディフェンス（制作途中）",
       discription: "タワーディフェンスゲームです。",
       content: "スマホ・PCで遊べるタワーディフェンスゲームです。",
-      url: "https://tower-defense-chi.vercel.app/",
+      url: "https://tower-defense-pi.vercel.app/",
     },
     // {
     //   id: 5,
