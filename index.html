@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            font-size: 16px;
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            background: #f5f5f5;
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        .shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -8s;
+            animation-duration: 30s;
+        }
+
+        .shape:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 80%;
+            left: 70%;
+            animation-delay: -15s;
+            animation-duration: 20s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(0px) rotate(360deg);
+                opacity: 0.1;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            margin-bottom: 80px;
+            text-align: center;
+            opacity: 0;
+            animation: slideInDown 1s ease-out 0.2s forwards;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 200;
+            letter-spacing: -0.05em;
+            margin-bottom: 16px;
+            line-height: 0.9;
+            background: linear-gradient(45deg, #000000, #737373);
+            background-size: 200% 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 3s ease-in-out infinite;
+        }
+
+        @keyframes textShine {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .header p {
+            font-size: 1.125rem;
+            color: #737373;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .controls {
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.8s ease-out 0.8s forwards;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .controls::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .controls:hover::before {
+            left: 100%;
+        }
+
+        .controls:hover {
+            border-color: #d4d4d4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .controls-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #404040;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .game-counter {
+            font-size: 0.875rem;
+            color: #737373;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .game-counter.updating {
+            transform: scale(1.1);
+            color: #000000;
+        }
+
+        .filter-section {
+            padding: 32px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #525252;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .filter-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-chip {
+            background: #ffffff;
+            border: 1px solid #d4d4d4;
+            color: #404040;
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-chip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .filter-chip:hover {
+            border-color: #a3a3a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-chip:hover::before {
+            left: 0;
+        }
+
+        .filter-chip:hover {
+            color: #ffffff;
+        }
+
+        .filter-chip.active {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+            transform: scale(1.05);
+        }
+
+        .filter-chip.active::before {
+            left: 0;
+        }
+
+        .add-section {
+            padding: 32px;
+            text-align: center;
+        }
+
+        .minimal-btn {
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .minimal-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .minimal-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .minimal-btn:hover {
+            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .minimal-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .add-section {
+            padding: 32px;
+            text-align: center;
+        }
+
+        .minimal-btn {
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .minimal-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .minimal-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .minimal-btn:hover {
+            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .minimal-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .games-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1px;
+            background: #e5e5e5;
+        }
+
+        .game-item {
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: staggerIn 0.6s ease-out forwards;
+            transform-origin: center center;
+        }
+
+        .game-item:nth-child(1) { animation-delay: 1.0s; }
+        .game-item:nth-child(2) { animation-delay: 1.2s; }
+        .game-item:nth-child(3) { animation-delay: 1.4s; }
+        .game-item:nth-child(4) { animation-delay: 1.6s; }
+        .game-item:nth-child(5) { animation-delay: 1.8s; }
+        .game-item:nth-child(6) { animation-delay: 2.0s; }
+
+        @keyframes staggerIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .game-item.hidden {
+            display: none;
+        }
+
+        .game-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0,0,0,0.03), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .game-item:hover::before {
+            transform: translateX(100%);
+        }
+
+        .game-item:hover {
+            background: #fafafa;
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            z-index: 5;
+        }
+
+        .item-header {
+            padding: 24px 32px 0;
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .game-number {
+            font-size: 3rem;
+            font-weight: 200;
+            color: #d4d4d4;
+            line-height: 1;
+            margin-right: 24px;
+            min-width: 80px;
+            transition: all 0.3s ease;
+            transform-origin: center center;
+        }
+
+        .game-item:hover .game-number {
+            color: #000000;
+            transform: scale(1.05);
+        }
+
+        .game-header-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .game-category-tag {
+            background: #f5f5f5;
+            color: #525252;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+            transform-origin: left center;
+        }
+
+        .game-item:hover .game-category-tag {
+            background: #000000;
+            color: #ffffff;
+            transform: translateX(3px);
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            transition: all 0.3s ease;
+            transform-origin: left center;
+        }
+
+        .game-item:hover .game-title {
+            transform: translateX(3px);
+        }
+
+        .game-description {
+            color: #525252;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: 32px;
+            padding: 0 32px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            transform-origin: left center;
+        }
+
+        .game-item:hover .game-description {
+            color: #404040;
+            transform: translateX(3px);
+        }
+
+        .item-footer {
+            padding: 24px 32px;
+            border-top: 1px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .launch-btn {
+            background: transparent;
+            border: 1px solid #d4d4d4;
+            color: #404040;
+            padding: 8px 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+            transform-origin: center center;
+        }
+
+        .launch-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .launch-btn:hover::before {
+            left: 0;
+        }
+
+        .launch-btn:hover {
+            color: #ffffff;
+            border-color: #000000;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .game-metadata {
+            font-size: 0.8125rem;
+            color: #a3a3a3;
+            text-align: right;
+            line-height: 1.4;
+            transition: all 0.3s ease;
+            transform-origin: right center;
+        }
+
+        .game-item:hover .game-metadata {
+            color: #737373;
+            transform: translateX(-3px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-container {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal.show .modal-container {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            padding: 32px 40px;
+            border-bottom: 1px solid #e5e5e5;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #000000;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 32px;
+            right: 40px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #a3a3a3;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: #404040;
+            background: #f5f5f5;
+            transform: rotate(90deg);
+        }
+
+        .modal-content {
+            padding: 40px;
+        }
+
+        .field-group {
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fieldSlideIn 0.4s ease-out forwards;
+        }
+
+        .field-group:nth-child(1) { animation-delay: 0.1s; }
+        .field-group:nth-child(2) { animation-delay: 0.2s; }
+        .field-group:nth-child(3) { animation-delay: 0.3s; }
+        .field-group:nth-child(4) { animation-delay: 0.4s; }
+        .field-group:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fieldSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #404040;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d4d4d4;
+            background: #ffffff;
+            color: #000000;
+            font-size: 0.9375rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .style-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .style-option {
+            padding: 16px;
+            border: 1px solid #d4d4d4;
+            background: #ffffff;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #404040;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .style-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .style-option:hover {
+            border-color: #a3a3a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .style-option:hover::before {
+            left: 0;
+        }
+
+        .style-option:hover {
+            color: #ffffff;
+        }
+
+        .style-option.active {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+            transform: scale(1.05);
+        }
+
+        .style-option.active::before {
+            left: 0;
+        };
+        }
+
+        .style-option.active {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            padding: 32px 40px;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            border: 1px solid #d4d4d4;
+            color: #404040;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-secondary:hover {
+            border-color: #a3a3a3;
+            background: #fafafa;
+            transform: translateY(-2px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-container {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(50px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal.show .modal-container {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            padding: 32px 40px;
+            border-bottom: 1px solid #e5e5e5;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #000000;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 32px;
+            right: 40px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #a3a3a3;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: #404040;
+            background: #f5f5f5;
+            transform: rotate(90deg);
+        }
+
+        .modal-content {
+            padding: 40px;
+        }
+
+        .field-group {
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fieldSlideIn 0.4s ease-out forwards;
+        }
+
+        .field-group:nth-child(1) { animation-delay: 0.1s; }
+        .field-group:nth-child(2) { animation-delay: 0.2s; }
+        .field-group:nth-child(3) { animation-delay: 0.3s; }
+        .field-group:nth-child(4) { animation-delay: 0.4s; }
+        .field-group:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fieldSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #404040;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d4d4d4;
+            background: #ffffff;
+            color: #000000;
+            font-size: 0.9375rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .style-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .style-option {
+            padding: 16px;
+            border: 1px solid #d4d4d4;
+            background: #ffffff;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #404040;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .style-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .style-option:hover {
+            border-color: #a3a3a3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .style-option:hover::before {
+            left: 0;
+        }
+
+        .style-option:hover {
+            color: #ffffff;
+        }
+
+        .style-option.active {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+            transform: scale(1.05);
+        }
+
+        .style-option.active::before {
+            left: 0;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            padding: 32px 40px;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            border: 1px solid #d4d4d4;
+            color: #404040;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-secondary:hover {
+            border-color: #a3a3a3;
+            background: #fafafa;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            color: #a3a3a3;
+            font-size: 0.9375rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .games-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .game-number {
+                margin-right: 0;
+                margin-bottom: 16px;
+                font-size: 2rem;
+            }
+
+            .game-description {
+                padding: 0 24px;
+            }
+
+            .item-footer {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .floating-shapes {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .floating-shapes {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Games</h1>
+            <p>A minimal collection of interactive experiences</p>
+        </div>
+
+        <div class="controls">
+            <div class="controls-header">
+                <div class="controls-title">Collection</div>
+                <div class="game-counter"><span id="gameCount">0</span> games</div>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-label">Filter</div>
+                <div class="filter-grid" id="filterGrid">
+                    <button class="filter-chip active" data-filter="all">All</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="games-layout" id="gamesLayout">
+            <!-- ゲームアイテムは JavaScript で動的に追加されます -->
+        </div>
+    </div>
+
+    <script>
+        var gameCollection = [
+            {
+                title: "Snake",
+                url: "https://snake-beta-lemon.vercel.app/",
+                description: "A classic arcade game reimagined. Navigate the growing serpent through space while collecting food and avoiding collisions. Simple mechanics meet endless entertainment.",
+                category: "Arcade",
+                added: "2025-07-22",
+                id: 1
+            },
+            {
+                title: "2048",
+                url: "https://2048-alpha-sand.vercel.app/",
+                description: "The beloved number puzzle that took the world by storm. Slide tiles strategically to combine numbers and reach the elusive 2048 tile. Pure mathematical satisfaction.",
+                category: "Puzzle",
+                added: "2025-07-22",
+                id: 2
+            }
+        ];
+
+        var selectedStyle = "minimal";
+        var activeFilter = "all";
+
+        function getCategories() {
+            var categories = [];
+            for (var i = 0; i < gameCollection.length; i++) {
+                var category = gameCollection[i].category;
+                if (categories.indexOf(category) === -1) {
+                    categories.push(category);
+                }
+            }
+            return categories.sort();
+        }
+
+        function updateFilterButtons() {
+            var filterGrid = document.getElementById('filterGrid');
+            if (!filterGrid) return;
+
+            var categories = getCategories();
+            
+            filterGrid.innerHTML = '<button class="filter-chip active" data-filter="all">All</button>';
+            
+            for (var i = 0; i < categories.length; i++) {
+                var category = categories[i];
+                var button = document.createElement('button');
+                button.className = 'filter-chip';
+                button.setAttribute('data-filter', category);
+                button.onclick = function(cat) {
+                    return function() { setFilter(cat); };
+                }(category);
+                button.textContent = category;
+                filterGrid.appendChild(button);
+            }
+        }
+
+        function setFilter(filter) {
+            activeFilter = filter;
+            
+            var filterButtons = document.querySelectorAll('.filter-chip');
+            for (var i = 0; i < filterButtons.length; i++) {
+                filterButtons[i].classList.remove('active');
+            }
+            
+            var activeButton = document.querySelector('.filter-chip[data-filter="' + filter + '"]');
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+            
+            applyFilter();
+        }
+
+        function applyFilter() {
+            var gameItems = document.querySelectorAll('.game-item');
+            var visibleCount = 0;
+            
+            for (var i = 0; i < gameItems.length; i++) {
+                var item = gameItems[i];
+                if (i < gameCollection.length) {
+                    var category = gameCollection[i].category;
+                    
+                    if (activeFilter === 'all' || category === activeFilter) {
+                        item.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                }
+            }
+            
+            showEmptyState(visibleCount === 0);
+            updateGameCount(visibleCount);
+        }
+
+        function showEmptyState(show) {
+            var gamesLayout = document.getElementById('gamesLayout');
+            var existingEmpty = document.querySelector('.empty-state');
+            
+            if (existingEmpty) {
+                existingEmpty.remove();
+            }
+            
+            if (show) {
+                var emptyDiv = document.createElement('div');
+                emptyDiv.className = 'empty-state';
+                emptyDiv.innerHTML = 
+                    '<div class="empty-state-icon">∅</div>' +
+                    '<div>No games found in this category</div>';
+                gamesLayout.appendChild(emptyDiv);
+            }
+        }
+
+        function updateGameCount(count) {
+            var gameCountElement = document.getElementById('gameCount');
+            if (gameCountElement) {
+                gameCountElement.classList.add('updating');
+                setTimeout(function() {
+                    gameCountElement.classList.remove('updating');
+                }, 300);
+
+                if (activeFilter === 'all') {
+                    gameCountElement.textContent = gameCollection.length;
+                } else {
+                    gameCountElement.textContent = count + ' of ' + gameCollection.length;
+                }
+            }
+        }
+
+        function formatDate(date) {
+            var options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        function renderGames() {
+            var gamesLayout = document.getElementById('gamesLayout');
+            if (!gamesLayout) return;
+            
+            gamesLayout.innerHTML = '';
+
+            for (var i = 0; i < gameCollection.length; i++) {
+                var game = gameCollection[i];
+                var gameItem = document.createElement('div');
+                gameItem.className = 'game-item';
+                
+                var numberDisplay = String(i + 1).padStart(2, '0');
+                var dateObj = new Date(game.added);
+                var formattedDate = formatDate(dateObj);
+                
+                gameItem.innerHTML = 
+                    '<div class="item-header">' +
+                        '<div class="game-number">' + numberDisplay + '</div>' +
+                        '<div class="game-header-content">' +
+                            '<div class="game-category-tag">' + game.category + '</div>' +
+                            '<h3 class="game-title">' + game.title + '</h3>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="game-description">' + game.description + '</div>' +
+                    '<div class="item-footer">' +
+                        '<button class="launch-btn" onclick="launchGame(\'' + game.url + '\')">Launch</button>' +
+                        '<div class="game-metadata">' +
+                            '<div>Added ' + formattedDate + '</div>' +
+                        '</div>' +
+                    '</div>';
+                
+                gameItem.addEventListener('click', function(gameUrl) {
+                    return function(e) {
+                        if (e.target.tagName.toLowerCase() !== 'button') {
+                            launchGame(gameUrl);
+                        }
+                    };
+                }(game.url));
+
+                gamesLayout.appendChild(gameItem);
+            }
+
+            updateFilterButtons();
+            applyFilter();
+        }
+
+        function launchGame(url) {
+            window.open(url, '_blank');
+        }
+
+        function setupEvents() {
+            // フィルターボタンのイベント
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('filter-chip')) {
+                    var filter = e.target.getAttribute('data-filter');
+                    setFilter(filter);
+                }
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                renderGames();
+                setupEvents();
+            });
+        } else {
+            renderGames();
+            setupEvents();
+        }
+    </script>
+</body>
+</html>
